@@ -9,8 +9,6 @@ MCEF is based on java-cef (Java Chromium Embedded Framework), which is based on 
 
 MCEF contains a downloader system for downloading the java-cef & CEF binaries required by the Chromium browser. This requires a connection to https://mcef-download.cinemamod.com.
 
-Discussion: https://discord.gg/rNrh5kW8Ty
-
 Current Chromium version: `116.0.5845.190`
 
 ## Supported Platforms
@@ -25,9 +23,8 @@ Current Chromium version: `116.0.5845.190`
 ## For Players
 This is the source code for MCEF.
 
-Download the mod for Fabric or NeoForge on either:
-- CurseForge: https://www.curseforge.com/minecraft/mc-mods/mcef
-- Modrinth: https://modrinth.com/mod/mcef
+Download the mod for Fabric on:
+- GitHub Releases: https://github.com/playgamesgo/mcef/releases
 
 ## For Modders
 MCEF is LGPL, as long as your project doesn't modify or include MCEF source code, you can choose a different license. Read the full license in the LICENSE file in this directory.
@@ -36,34 +33,19 @@ MCEF is LGPL, as long as your project doesn't modify or include MCEF source code
 ```
 repositories {
     maven {
-        url = uri('https://mcef-download.cinemamod.com/repositories/releases')
-    }
-    // Optional for snapshot versions
-    maven {
-        url = uri('https://mcef-download.cinemamod.com/repositories/snapshots')
+        name "mirageRepositoryReleases"
+        url "https://repo.mirage-play.com/releases"
     }
 }
 ```
 #### Fabric
 ```
 dependencies {
-    modCompileOnly 'com.cinemamod:mcef:2.1.6-1.21.1'
-    modRuntimeOnly 'com.cinemamod:mcef-fabric:2.1.6-1.21.1'
+    modCompileOnly 'com.cinemamod:mcef:2.1.7-1.21.4'
+    modRuntimeOnly 'com.cinemamod:mcef-fabric:2.1.7-1.21.4'
 }
 ```
 See the [mcef-fabric-example-mod](https://github.com/CinemaMod/mcef-fabric-example-mod) for a complete example Fabric project.
 
-#### NeoForge
-```
-dependencies {
-    compileOnly fg.deobf('com.cinemamod:mcef:2.1.6-1.21.1')
-    runtimeOnly fg.deobf('com.cinemamod:mcef-neoforge:2.1.6-1.21.1')
-}
-```
 ### Building & Modifying MCEF
 After cloning this repo, you will need to clone the java-cef git submodule. There is a gradle task for this: `./gradlew cloneJcef`.
-
-To run the Fabric client: `./gradlew fabricClient`
-To run the NeoForge client: `./gradlew neoforgeClient`
-
-In-game, there is a demo browser if you press F10 after you're loaded into a world (the demo browser only exists when you're running from a development environment).

@@ -21,33 +21,6 @@ repositories {
     mavenLocal()
 }
 
-/*
-    Add the following to ~/.gradle/gradle.properties
-    systemProp.org.gradle.s3.endpoint=https://<the s3 endpoint>
-    MCEF_S3_PUBLISH_URL_SNAPSHOT=s3://<bucket>/repositories/snapshots
-    MCEF_S3_PUBLISH_URL_RELEASE=s3://<bucket>/repositories/releases
-    MCEF_S3_PUBLISH_ACCESS_KEY=<access key>
-    MCEF_S3_PUBLISH_SECRET_KEY=<secret key>
- */
-publishing {
-    repositories {
-        maven {
-            url ((mcef_version.toString().endsWith("SNAPSHOT")) ? findProperty('MCEF_S3_PUBLISH_URL_SNAPSHOT') : findProperty('MCEF_S3_PUBLISH_URL_RELEASE'))
-            credentials(AwsCredentials) {
-                accessKey = findProperty('MCEF_S3_PUBLISH_ACCESS_KEY')
-                secretKey = findProperty('MCEF_S3_PUBLISH_SECRET_KEY')
-            }
-        }
-    }
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            groupId = 'com.cinemamod'
-            artifactId = 'mcef-fabric'
-            version = mcef_version
-        }
-    }
-}
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
@@ -67,7 +40,7 @@ dependencies {
         modImplementation(fabricApi.module(it, fabric_version))
     }
 
-    implementation project(path: ':common', configuration: 'namedElements')
+    //implementation project(path: ':common', configuration: 'namedElements')
 }
 
 loom {
@@ -161,4 +134,52 @@ shadowJar {
 remapJar {
     dependsOn shadowJar
     inputFile = shadowJar.archiveFile.get()
+}
+
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from('src/main/resources/META-INF/services') {
+        into('META-INF/services')
+    }
+}
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                name = "mirageRepository"
+                url = "https://repo.mirage-play.com/releases"
+                credentials {
+                    username = System.getenv("USERNAME")
+                    password = System.getenv("TOKEN")
+                }
+                authentication {
+                    basic(BasicAuthentication)
+                }
+            }
+        }
+        publications {
+            maven(MavenPublication) {
+                groupId = 'com.cinemamod'
+                artifactId = 'mcef-fabric'
+                version = mcef_version
+                from(components.java)
+
+                pom {
+                    name = project.name
+                    description = project.description
+                    url = "https://github.com/playgamesgo/mcef"
+                }
+            }
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
 }
