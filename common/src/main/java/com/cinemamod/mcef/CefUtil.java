@@ -20,7 +20,6 @@
 
 package com.cinemamod.mcef;
 
-import net.minecraft.client.Minecraft;
 import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.CefSettings;
@@ -33,6 +32,7 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import net.minecraft.client.MinecraftClient;
 
 /**
  * This class mostly just interacts with org.cef.* for internal use in {@link MCEF}
@@ -45,7 +45,7 @@ final class CefUtil {
     private static CefApp cefAppInstance;
     private static CefClient cefClientInstance;
 
-    private static final Path CACHE_PATH = Minecraft.getInstance().gameDirectory
+    private static final Path CACHE_PATH = MinecraftClient.getInstance().runDirectory
             .toPath()
             .resolve("mods")
             .resolve("mcef-cache");

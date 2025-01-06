@@ -35,7 +35,6 @@ tasks.register('publishMaven', GradleBuild) {
     tasks = [
           ':common:publish',
           ':fabric:publish',
-          ':neoforge:publish'
     ]
 }
 
@@ -43,9 +42,7 @@ tasks.register('publishCurseforge', GradleBuild) {
     group = 'mcef'
     tasks = [
             ':common:clean',
-            ':neoforge:clean',
             ':fabric:clean',
-            ':neoforge:curseforge',
             ':fabric:curseforge'
     ]
 }
@@ -57,24 +54,10 @@ tasks.register('fabricClient', GradleBuild) {
     ]
 }
 
-tasks.register('neoforgeClient', GradleBuild) {
-    group = 'mcef'
-    tasks = [
-          ':neoforge:runClient'
-    ]
-}
-
 tasks.register('fabricServer', GradleBuild) {
     group = 'mcef'
     tasks = [
           ':fabric:runServer'
-    ]
-}
-
-tasks.register('neoforgeServer', GradleBuild) {
-    group = 'mcef'
-    tasks = [
-          ':neoforge:runServer'
     ]
 }
 
@@ -83,6 +66,5 @@ tasks.register('cleanAll', GradleBuild) {
     tasks = [
           ':common:clean',
           ':fabric:clean',
-          ':neoforge:clean',
     ]
 }

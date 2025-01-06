@@ -21,7 +21,7 @@
 package com.cinemamod.mcef;
 
 import com.cinemamod.mcef.listeners.MCEFInitListener;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.MinecraftClient;
 import org.cef.misc.CefCursorType;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
@@ -97,7 +97,7 @@ public final class MCEF {
             } else if (platform.isMacOS()) {
                 CefUtil.getCefApp().macOSTerminationRequestRunnable = () -> {
                     shutdown();
-                    Minecraft.getInstance().stop();
+                    MinecraftClient.getInstance().stop();
                 };
             }
 

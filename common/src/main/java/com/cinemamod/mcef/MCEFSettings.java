@@ -20,8 +20,6 @@
 
 package com.cinemamod.mcef;
 
-import net.minecraft.client.Minecraft;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,9 +27,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
+import net.minecraft.client.MinecraftClient;
 
 public class MCEFSettings {
-    private static final Path PATH = Minecraft.getInstance().gameDirectory
+    private static final Path PATH = MinecraftClient.getInstance().runDirectory
             .toPath()
             .resolve("config")
             .resolve("mcef")

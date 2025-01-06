@@ -23,15 +23,24 @@ package com.cinemamod.mcef.mixins;
 import com.cinemamod.mcef.MCEF;
 import com.cinemamod.mcef.internal.MCEFDownloadListener;
 import com.cinemamod.mcef.internal.MCEFDownloaderMenu;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.*;
-import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
-import net.minecraft.client.gui.screens.multiplayer.SafetyScreen;
-import net.minecraft.client.gui.screens.packs.PackSelectionScreen;
-import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
-import net.minecraft.client.gui.screens.worldselection.EditGameRulesScreen;
-import net.minecraft.client.gui.screens.worldselection.ExperimentsScreen;
-import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.AccessibilityOnboardingScreen;
+import net.minecraft.client.gui.screen.DownloadingTerrainScreen;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.screen.multiplayer.AddServerScreen;
+import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
+import net.minecraft.client.gui.screen.multiplayer.DirectConnectScreen;
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerWarningScreen;
+import net.minecraft.client.gui.screen.pack.PackScreen;
+import net.minecraft.client.gui.screen.world.CreateWorldScreen;
+import net.minecraft.client.gui.screen.world.CustomizeBuffetLevelScreen;
+import net.minecraft.client.gui.screen.world.CustomizeFlatLevelScreen;
+import net.minecraft.client.gui.screen.world.EditGameRulesScreen;
+import net.minecraft.client.gui.screen.world.ExperimentsScreen;
+import net.minecraft.client.gui.screen.world.LevelLoadingScreen;
+import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,7 +51,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Mixin(Minecraft.class)
+@Mixin(MinecraftClient.class)
 public abstract class CefInitMixin {
     @Shadow
     public abstract void setScreen(@Nullable Screen guiScreen);
@@ -65,25 +74,25 @@ public abstract class CefInitMixin {
                     !recursionValue ||
                             guiScreen instanceof TitleScreen ||
                             guiScreen instanceof LevelLoadingScreen ||
-                            guiScreen instanceof ReceivingLevelScreen ||
+                            guiScreen instanceof DownloadingTerrainScreen ||
                             guiScreen instanceof SelectWorldScreen ||
-                            guiScreen instanceof DirectJoinServerScreen ||
-                            guiScreen instanceof EditServerScreen ||
+                            guiScreen instanceof DirectConnectScreen ||
+                            guiScreen instanceof AddServerScreen ||
                             guiScreen instanceof ConnectScreen ||
                             guiScreen instanceof AccessibilityOnboardingScreen ||
-                            guiScreen instanceof SafetyScreen ||
-                            guiScreen instanceof JoinMultiplayerScreen ||
+                            guiScreen instanceof MultiplayerWarningScreen ||
+                            guiScreen instanceof MultiplayerScreen ||
                             guiScreen instanceof CreateWorldScreen ||
                             guiScreen instanceof EditGameRulesScreen ||
                             guiScreen instanceof ExperimentsScreen ||
-                            guiScreen instanceof PackSelectionScreen ||
-                            guiScreen instanceof CreateFlatWorldScreen ||
-                            guiScreen instanceof CreateBuffetWorldScreen
+                            guiScreen instanceof PackScreen ||
+                            guiScreen instanceof CustomizeFlatLevelScreen ||
+                            guiScreen instanceof CustomizeBuffetLevelScreen
             ) {
                 // If the download is done and didn't fail
                 if (MCEFDownloadListener.INSTANCE.isDone() && !MCEFDownloadListener.INSTANCE.isFailed()) {
                     MCEF.getLogger().debug("MCEF already finished downloading, scheduling loading.");
-                    Minecraft.getInstance().execute((() -> {
+                    MinecraftClient.getInstance().execute((() -> {
                         MCEF.getLogger().debug("MCEF is attempting to load.");
                         try {
                             Thread.sleep(1000);

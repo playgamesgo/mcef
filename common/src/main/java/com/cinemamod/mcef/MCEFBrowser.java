@@ -23,7 +23,6 @@ package com.cinemamod.mcef;
 import com.cinemamod.mcef.listeners.MCEFCursorChangeListener;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefBrowserOsr;
 import org.cef.callback.CefDragData;
@@ -37,6 +36,7 @@ import org.lwjgl.system.libc.LibCString;
 
 import java.awt.*;
 import java.nio.ByteBuffer;
+import net.minecraft.client.MinecraftClient;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -89,7 +89,7 @@ public class MCEFBrowser extends CefBrowserOsr {
         renderer = new MCEFRenderer(transparent);
         cursorChangeListener = (cefCursorID) -> setCursor(CefCursorType.fromId(cefCursorID));
 
-        Minecraft.getInstance().submit(renderer::initialize);
+        MinecraftClient.getInstance().submit(renderer::initialize);
     }
 
     public MCEFRenderer getRenderer() {
@@ -410,7 +410,7 @@ public class MCEFBrowser extends CefBrowserOsr {
 
     @Override
     protected void finalize() throws Throwable {
-        Minecraft.getInstance().submit(renderer::cleanup);
+        MinecraftClient.getInstance().submit(renderer::cleanup);
         super.finalize();
     }
 
@@ -424,10 +424,10 @@ public class MCEFBrowser extends CefBrowserOsr {
 
     public void setCursor(CefCursorType cursorType) {
         if (cursorType == CefCursorType.NONE) {
-            GLFW.glfwSetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+            GLFW.glfwSetInputMode(MinecraftClient.getInstance().getWindow().getHandle(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
         } else {
-            GLFW.glfwSetInputMode(Minecraft.getInstance().getWindow().getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-            GLFW.glfwSetCursor(Minecraft.getInstance().getWindow().getWindow(), MCEF.getGLFWCursorHandle(cursorType));
+            GLFW.glfwSetInputMode(MinecraftClient.getInstance().getWindow().getHandle(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            GLFW.glfwSetCursor(MinecraftClient.getInstance().getWindow().getHandle(), MCEF.getGLFWCursorHandle(cursorType));
         }
     }
 }

@@ -46,10 +46,7 @@ publishing {
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings loom.layered() {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-1.21:2024.07.28@zip")
-    }
+    mappings "net.fabricmc:yarn:1.21.4+build.7:v2"
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
 }
 

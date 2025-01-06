@@ -2,7 +2,6 @@ package com.cinemamod.mcef.mixins;
 
 import com.cinemamod.mcef.MCEF;
 import com.cinemamod.mcef.MCEFPlatform;
-import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -10,8 +9,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import net.minecraft.client.MinecraftClient;
 
-@Mixin(Minecraft.class)
+@Mixin(MinecraftClient.class)
 public class CefWindowsShutdownMixin {
     /**
      * Temporary workaround to address lingering JCEF processes on Windows.

@@ -25,7 +25,6 @@ import com.cinemamod.mcef.MCEFDownloader;
 import com.cinemamod.mcef.MCEFPlatform;
 import com.cinemamod.mcef.MCEFSettings;
 import com.cinemamod.mcef.internal.MCEFDownloadListener;
-import net.minecraft.client.resources.ClientPackSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,6 +33,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.File;
 import java.io.IOException;
+import net.minecraft.client.resource.DefaultClientResourcePackProvider;
 
 /**
  * <p>
@@ -45,7 +45,7 @@ import java.io.IOException;
  * {@link MCEFPlatform#getNormalizedName()}. This is what java-cef uses internally to find the
  * installation. Also see {@link org.cef.CefApp}.
  */
-@Mixin(ClientPackSource.class)
+@Mixin(DefaultClientResourcePackProvider.class)
 public class CefDownloadMixin {
     @Unique
     private static void setupLibraryPath() throws IOException {
